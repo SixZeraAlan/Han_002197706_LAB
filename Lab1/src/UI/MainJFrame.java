@@ -209,8 +209,8 @@ public class MainJFrame extends javax.swing.JFrame {
         personalContact.setEmail(email);
 
         Contact officeContact = this.person.getOfficeContact();
-        officeContact.setOfficePhone(officePhone);
-        officeContact.setOfficeEmail(officeEmail);
+        officeContact.setPhone(officePhone);
+        officeContact.setEmail(officeEmail);
 
         display();
     }//GEN-LAST:event_SaveBTNActionPerformed
@@ -227,9 +227,9 @@ public class MainJFrame extends javax.swing.JFrame {
         viewStreet.setText(this.person.getAddress().getStreetName());
         viewPermanentStreet.setText(this.person.getPermanentAddress().getStreetName());
         viewPersonalPhone.setText(String.valueOf(this.person.getPersonalContact().getPhone()));
-        viewOfficePhone.setText(String.valueOf(this.person.getOfficeContact().getOfficePhone()));
+        viewOfficePhone.setText(String.valueOf(this.person.getOfficeContact().getPhone()));
         viewPersonalEmail.setText(this.person.getPersonalContact().getEmail());
-        viewOfficeEmail.setText(this.person.getOfficeContact().getOfficeEmail());
+        viewOfficeEmail.setText(this.person.getOfficeContact().getEmail());
 
     }
     /**

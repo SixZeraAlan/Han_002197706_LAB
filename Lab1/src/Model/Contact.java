@@ -12,9 +12,7 @@ package Model;
 public class Contact {
     
     private long phone;
-    private long officePhone;
     private String email;
-    private String officeEmail;
 
     public Contact() {
     }
@@ -27,13 +25,6 @@ public class Contact {
         this.phone = phone;
     }
 
-    public long getOfficePhone() {
-        return officePhone;
-    }
-
-    public void setOfficePhone(long officePhone) {
-        this.officePhone = officePhone;
-    }
 
     public String getEmail() {
         return email;
@@ -43,15 +34,5 @@ public class Contact {
         this.email = email;
     }
 
-    public String getOfficeEmail() {
-        return officeEmail;
-    }
-
-    public void setOfficeEmail(String officeEmail) {
-        this.officeEmail = officeEmail;
-    }
-
-    
-    
     
 }
