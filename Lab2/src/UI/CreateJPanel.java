@@ -84,7 +84,7 @@ public class CreateJPanel extends javax.swing.JPanel {
 
         jLabel7.setText("customer Id");
 
-        jButton1.setText("CREATE");
+        jButton1.setText("SAVE");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -223,13 +223,16 @@ public class CreateJPanel extends javax.swing.JPanel {
     private void customerNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_customerNameFocusLost
         // TODO add your handling code here:
 //        System.out.println(customerName.getText() + " -- the customer name");
-        String name = customerName.getText();
+        String id = packageId.getText();
+        String weight = packageWt.getText();
+        String custId = customerId.getText();
+        String custName = customerName.getText();
         
-        if(name.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please fill name");
-            this.validate = true;
-        } else {
+        if(id.isEmpty() || weight.isEmpty() || custId.isEmpty() || custName.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill all fields");
             this.validate = false;
+        } else {
+            this.validate = true;
         }
     }//GEN-LAST:event_customerNameFocusLost
 
@@ -239,7 +242,7 @@ public class CreateJPanel extends javax.swing.JPanel {
         String pName = productName.getText();
         String pPrice = productPrice.getText();
         
-        Product product = this.deliveryPackage.createProduct(Integer.valueOf(pId), pName, Double.valueOf(pPrice));
+//        Product product = this.deliveryPackage.createProduct(Integer.valueOf(pId), pName, Double.valueOf(pPrice));
        
          JOptionPane.showMessageDialog(null, "Added Product");
     }//GEN-LAST:event_saveProductActionPerformed

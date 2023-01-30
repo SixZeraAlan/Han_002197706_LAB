@@ -15,13 +15,13 @@ public class DeliveryPackage {
     
     int packageId;
     double packageWeight;
-    ArrayList<Product> productList;
-//    Product product;
+//    ArrayList<Product> productList;
+    Product product;
     Customer customer;
 
     public DeliveryPackage() {
-//        this.product = new Product();
-        this.productList = new ArrayList<Product>();
+        this.product = new Product();
+//        this.productList = new ArrayList<Product>();
         this.customer = new Customer();
     }
 
@@ -41,21 +41,21 @@ public class DeliveryPackage {
         this.packageWeight = packageWeight;
     }
 
-    public ArrayList<Product> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(ArrayList<Product> productList) {
-        this.productList = productList;
-    }
-
-//    public Product getProduct() {
-//        return product;
+//    public ArrayList<Product> getProductList() {
+//        return productList;
 //    }
 //
-//    public void setProduct(Product product) {
-//        this.product = product;
+//    public void setProductList(ArrayList<Product> productList) {
+//        this.productList = productList;
 //    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
     
 
     public Customer getCustomer() {
@@ -66,29 +66,29 @@ public class DeliveryPackage {
         this.customer = customer;
     }
 
-    public Product createProduct(int productId, String productName, double price) {
-        // create new prod object
-        Product product = new Product();
+//    public Product createProduct(int productId, String productName, double price) {
+//        // create new prod object
+//        Product product = new Product();
+//
+//        // set the attributes
+//        product.setProductId(productId);
+//        product.setProductName(productName);
+//        product.setPrice(price);
+//
+//        // add it to list
+//        this.productList.add(product);
+//
+//        return product;
+//    }
 
-        // set the attributes
-        product.setProductId(productId);
-        product.setProductName(productName);
-        product.setPrice(price);
-
-        // add it to list
-        this.productList.add(product);
-
-        return product;
-    }
-
-    public Product findProduct(int pid) {
-        for (Product prod : this.productList) {
-            if (prod.getProductId() == pid) {
-                return prod;
-            }
-        }
-        return null;
-    }
+//    public Product findProduct(int pid) {
+//        for (Product prod : this.productList) {
+//            if (prod.getProductId() == pid) {
+//                return prod;
+//            }
+//        }
+//        return null;
+//    }
 
     
     

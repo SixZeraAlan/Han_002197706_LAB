@@ -28,7 +28,7 @@ public class EditJPanel extends javax.swing.JPanel {
     EditJPanel(DeliveryPackage deliveryPackage) {
         initComponents();
         this.deliveryPackage = deliveryPackage;
-        displayProductList();
+//        displayProductList();
         
         displayPackageDetails();
     }
@@ -209,9 +209,9 @@ public class EditJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         String id = this.packageId.getText();
         String weight = packageWt.getText();
-//        String pId = productId.getText();
-//        String pPrice = productPrice.getText();
-//        String pName = productName.getText();
+        String pId = productId.getText();
+        String pPrice = productPrice.getText();
+        String pName = productName.getText();
         String custId = customerId.getText();
         String custName = customerName.getText();
         
@@ -222,13 +222,13 @@ public class EditJPanel extends javax.swing.JPanel {
         customer.setCustomerId(Integer.valueOf(custId));
         customer.setFullName(custName);
         
-//        deliveryPackage.getProduct().setProductId(Integer.valueOf(pId));
-//        deliveryPackage.getProduct().setPrice(Integer.valueOf(pId));
-//        deliveryPackage.getProduct().setProductName(pName);
-//        deliveryPackage.getCustomer().setCustomerId(Integer.valueOf(custId));
-//        deliveryPackage.getCustomer().setFullName(custName);
+        deliveryPackage.getProduct().setProductId(Integer.valueOf(pId));
+        deliveryPackage.getProduct().setPrice(Integer.valueOf(pId));
+        deliveryPackage.getProduct().setProductName(pName);
+        deliveryPackage.getCustomer().setCustomerId(Integer.valueOf(custId));
+        deliveryPackage.getCustomer().setFullName(custName);
         
-//        JOptionPane.showMessageDialog(this, "Saved successfully!");
+        JOptionPane.showMessageDialog(this, "Saved successfully!");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -241,13 +241,13 @@ public class EditJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    public void displayProductList() {
-
-        for (Product p : this.deliveryPackage.getProductList()) {
-            jComboBox1.addItem(String.valueOf(p.getProductId()));
-        }
-
-    }
+//    public void displayProductList() {
+//
+//        for (Product p : this.deliveryPackage.getProductList()) {
+//            jComboBox1.addItem(String.valueOf(p.getProductId()));
+//        }
+//
+//    }
 
     public void displayPackageDetails() {
         packageId.setText(String.valueOf(this.deliveryPackage.getPackageId()));

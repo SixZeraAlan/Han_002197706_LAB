@@ -32,9 +32,9 @@ public class ViewJPanel extends javax.swing.JPanel {
     public void display() {
         packageId.setText(deliveryPackage.getPackageId() + "");
         packageWt.setText(deliveryPackage.getPackageWeight() + "");
-//        productId.setText(deliveryPackage.getProduct().getProductId() + "");
-//        productPrice.setText(deliveryPackage.getProduct().getPrice() + "");
-//        productName.setText(deliveryPackage.getProduct().getProductName() + "");
+        productId.setText(deliveryPackage.getProduct().getProductId() + "");
+        productPrice.setText(deliveryPackage.getProduct().getPrice() + "");
+        productName.setText(deliveryPackage.getProduct().getProductName() + "");
         customerId.setText(deliveryPackage.getCustomer().getCustomerId() + "");
         customerName.setText(deliveryPackage.getCustomer().getFullName() + "");
     }
