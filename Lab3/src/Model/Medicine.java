@@ -13,9 +13,12 @@ public class Medicine {
     String medicineName;
     Double dosage;
 
+    public Medicine(String medicineName, Double dosage) {
+        this.medicineName = medicineName;
+        this.dosage = dosage;
+    }
+
     public Medicine() {
-//        this.medicineName = medicineName;
-//        this.dosage = dosage;
     }
 
     public String getMedicineName() {
@@ -34,6 +37,11 @@ public class Medicine {
         this.dosage = dosage;
     }
 
+    public String toString() {
+        return medicineName;
+    }
+    
+    
     
     
     

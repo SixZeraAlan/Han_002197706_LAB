@@ -24,13 +24,26 @@ public class MedicineAssignJPanel extends javax.swing.JPanel {
     public MedicineAssignJPanel() {
         initComponents();
         this.application = application;
-//        populate();
+        
     }
 
     MedicineAssignJPanel(Application application) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        initComponents();
+        this.application = application;
+        populate();
     }
-
+    public void populate(){
+        for(Observation ob:application.getHistory().getVitalSignHistory()){
+            obBox.addItem(ob.toString());
+//              ObservationBox.addItem(ob);
+        }
+        
+        for(Medicine md : application.getCatalog().getMedicineList()){
+            medBox.addItem(md.toString());
+        }
+        
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,6 +57,9 @@ public class MedicineAssignJPanel extends javax.swing.JPanel {
         medBox = new javax.swing.JComboBox<>();
         btnAssign = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        showLabel = new javax.swing.JLabel();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -67,18 +83,30 @@ public class MedicineAssignJPanel extends javax.swing.JPanel {
         add(medBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 210, 180, 90));
 
         btnAssign.setText("Assign");
+        btnAssign.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAssignActionPerformed(evt);
+            }
+        });
         add(btnAssign, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 360, -1, -1));
 
-        jLabel1.setText("jLabel1");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 430, -1, -1));
+        jLabel1.setText("show");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 430, -1, -1));
+
+        jLabel2.setText("Medicine");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 150, -1, -1));
+
+        jLabel3.setText("Observation");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 150, -1, -1));
+
+        showLabel.setBackground(new java.awt.Color(102, 51, 255));
+        showLabel.setForeground(new java.awt.Color(102, 51, 255));
+        add(showLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 430, 110, 40));
     }// </editor-fold>//GEN-END:initComponents
 
     private void medBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medBoxActionPerformed
         // TODO add your handling code here:
-        Observation o = (Observation) obBox.getSelectedItem();
-        Medicine m = (Medicine) medBox.getSelectedItem();
-        
-        o.setMedication(m);
+    
     }//GEN-LAST:event_medBoxActionPerformed
 
     private void obBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_obBoxActionPerformed
@@ -87,12 +115,24 @@ public class MedicineAssignJPanel extends javax.swing.JPanel {
 
     private void obBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_obBoxItemStateChanged
         // TODO add your handling code here:
-        Observation o = (Observation) obBox.getSelectedItem();
+        Observation ob = application.getHistory().findObservation(Integer.parseInt((String) obBox.getSelectedItem()));
         
-        if(o.getMedication() != null) {
-            jLabel1.setText(o.getMedication().getMedicineName());
+        
+        if(ob.getMedicine()!= null){
+            showLabel.setText(ob.getMedicine().getMedicineName());
         }
     }//GEN-LAST:event_obBoxItemStateChanged
+
+    private void btnAssignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignActionPerformed
+        // TODO add your handling code here:
+        Observation ob = application.getHistory().findObservation(Integer.parseInt((String) obBox.getSelectedItem()));
+        Medicine md = application.getCatalog().findMedicine((String) medBox.getSelectedItem());
+        
+        ob.setMedicine(md);
+        
+
+        showLabel.setText(ob.getMedicine().getMedicineName());
+    }//GEN-LAST:event_btnAssignActionPerformed
     
 //    public void populate() {
 //        
@@ -113,7 +153,10 @@ public class MedicineAssignJPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAssign;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JComboBox<String> medBox;
     private javax.swing.JComboBox<String> obBox;
+    private javax.swing.JLabel showLabel;
     // End of variables declaration//GEN-END:variables
 }

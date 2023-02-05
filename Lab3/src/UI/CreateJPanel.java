@@ -18,7 +18,7 @@ public class CreateJPanel extends javax.swing.JPanel {
     /**
      * Creates new form CreateJPanel
      */
-    private Application application;
+    Application application;
     public CreateJPanel() {
         initComponents();
     }
@@ -48,7 +48,13 @@ public class CreateJPanel extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 153, 153));
         setForeground(new java.awt.Color(255, 204, 102));
 
-        jLabel1.setText("Create A Vital Sign");
+        jLabel1.setText("Create An Observation");
+
+        fieldObservationId.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fieldObservationIdFocusLost(evt);
+            }
+        });
 
         addVitalSign.setText("Add");
         addVitalSign.addActionListener(new java.awt.event.ActionListener() {
@@ -84,7 +90,7 @@ public class CreateJPanel extends javax.swing.JPanel {
                             .addComponent(fieldTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(fieldBloodPressure, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(addVitalSign))))
-                .addContainerGap(313, Short.MAX_VALUE))
+                .addContainerGap(288, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,13 +117,38 @@ public class CreateJPanel extends javax.swing.JPanel {
 
     private void addVitalSignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVitalSignActionPerformed
         // TODO add your handling code here:
-        VitalSignHistory history = this.application.getHistory();
         String id = fieldObservationId.getText();
         String temperatue = fieldTemperature.getText();
         String bloodPressure = fieldBloodPressure.getText();
-        history.createObservation(Integer.valueOf(id), Double.valueOf(temperatue), Double.valueOf(bloodPressure));
-        JOptionPane.showMessageDialog(null, "Added observation");
+        if(!application.getHistory().checkObservationIDUnique(Integer.parseInt(id))){
+            JOptionPane.showMessageDialog(null, "ID existed!");
+            return ;
+        }
+        
+        application.getHistory().createObservation(Integer.parseInt(id), Double.parseDouble(bloodPressure), Double.parseDouble(temperatue));
+        JOptionPane.showMessageDialog(null, "Added observation successfully!");
     }//GEN-LAST:event_addVitalSignActionPerformed
+
+    private void fieldObservationIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldObservationIdFocusLost
+        // TODO add your handling code here:
+        String id = fieldObservationId.getText();
+        
+        if(id.trim().isEmpty()){
+             JOptionPane.showMessageDialog(null, "Please input your ID!");
+            return;
+            
+        }else if(!id.matches("[0-9]*")){
+            JOptionPane.showMessageDialog(null, "ID shoud be digits!");
+            return;
+        }else{
+            int newId = Integer.parseInt(id);
+            if(!application.getHistory().checkObservationIDUnique(newId)){
+                
+                JOptionPane.showMessageDialog(null, "ID existed!");
+                fieldObservationId.setText("");
+            }
+        }
+    }//GEN-LAST:event_fieldObservationIdFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

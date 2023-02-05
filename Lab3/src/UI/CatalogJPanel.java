@@ -21,17 +21,19 @@ public class CatalogJPanel extends javax.swing.JPanel {
     /**
      * Creates new form CatalogJPanel
      */
-    private Application application;
-    DefaultTableModel medTableModel;
+    Application application;
+    DefaultTableModel model;
+    Medicine selectedMedicine;
     
     public CatalogJPanel() {
         initComponents();
+        model = (DefaultTableModel) viewTable.getModel();
     }
 
     CatalogJPanel(Application application) {
         initComponents();
         this.application = application;
-        this.medTableModel = (DefaultTableModel) medicineCatalogTable.getModel();
+        model = (DefaultTableModel) viewTable.getModel();
         display();
     }
 
@@ -45,15 +47,18 @@ public class CatalogJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        medicineCatalogTable = new javax.swing.JTable();
+        viewTable = new javax.swing.JTable();
         fieldDosage = new javax.swing.JTextField();
         fieldName = new javax.swing.JTextField();
         deleteBtn = new javax.swing.JButton();
         addBtn = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        medicineCatalogTable.setModel(new javax.swing.table.DefaultTableModel(
+        viewTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -72,7 +77,7 @@ public class CatalogJPanel extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(medicineCatalogTable);
+        jScrollPane1.setViewportView(viewTable);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 80, 330, 280));
         add(fieldDosage, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 200, 130, 60));
@@ -99,23 +104,32 @@ public class CatalogJPanel extends javax.swing.JPanel {
             }
         });
         add(addBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, -1, -1));
+
+        jLabel1.setText("Medicine Catalog");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 30, -1, -1));
+
+        jLabel2.setText("Dosage");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
+
+        jLabel3.setText("Name");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         // TODO add your handling code here:
-        int selectedRow = medicineCatalogTable.getSelectedRow();
+        int selectedRow = viewTable.getSelectedRow();
         
-        if(selectedRow >= 0) {
+        if(selectedRow < 0){
+            JOptionPane.showMessageDialog(null, "Please select a row");
+            return ;
+        }else{
             
-            // we will delete the object
+            selectedMedicine = (Medicine) model.getValueAt(selectedRow, 0);
             
-            Medicine med = (Medicine) medicineCatalogTable.getValueAt(selectedRow, 0);
+            application.getCatalog().getMedicineList().remove(selectedMedicine);
             
-            this.application.getCatalog().removeMedicine(med.getMedicineName());
-            
-            display();
-        } else {
-            
+            selectedMedicine = null;
+            JOptionPane.showMessageDialog(null, "Deleted successfully!");
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
 
@@ -125,48 +139,41 @@ public class CatalogJPanel extends javax.swing.JPanel {
         String dosage = fieldDosage.getText();
         // adding medicine
         
-        MedicineCatalog catalog = this.application.getCatalog();
-                
-        catalog.createMedicine(name, Double.valueOf(dosage));
+        if(!application.getCatalog().checIfMedicineUnique(name)){
+            JOptionPane.showMessageDialog(null, "Medicine exsited!");
+            return ;
+        }
         
-        // refrresh table
+        application.getCatalog().createMedicine(name, Double.parseDouble(dosage));
+        JOptionPane.showMessageDialog(null, "Added successfully!");
         display();
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void fieldNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldNameFocusLost
         // TODO add your handling code here:
         String name = fieldName.getText();
+        String dosage = fieldDosage.getText();
         
-        Boolean isUnique = this.application.getCatalog().checIfMedicineUnique(name);
-        
-        if(isUnique) {
-            
-        } else {
-            fieldName.setText("");
-            JOptionPane.showMessageDialog(null, "Medicine already exists");
+        if(!application.getCatalog().checIfMedicineUnique(name)){
+            JOptionPane.showMessageDialog(null, "Medicine exsited!");
+            return ;
         }
+        
+        application.getCatalog().createMedicine(name, Double.parseDouble(dosage));
+        JOptionPane.showMessageDialog(null, "Added successfully!");
     }//GEN-LAST:event_fieldNameFocusLost
     
     public void display() {
         // chekc if the catalog is not empty
         
-        ArrayList<Medicine> medicines = this.application.getCatalog().getMedicineList();
+        model.setRowCount(0);
         
-        if(medicines.size() > 0) {
-            // popultate
+        for(Medicine md:application.getCatalog().getMedicineList()){
+            Object[] row = new Object[2];
+            row[0] = md;
+            row[1] = md.getDosage();
             
-            medTableModel.setRowCount(0);
-            
-            for(Medicine med: medicines) {
-                
-                // row[] object for the table
-                
-                Object row[] = new Object[2];
-                row[0] = med;
-                row[1] = med.getDosage();
-                
-                medTableModel.addRow(row);
-            }
+            model.addRow(row);
         }
     }
 
@@ -175,7 +182,10 @@ public class CatalogJPanel extends javax.swing.JPanel {
     private javax.swing.JButton deleteBtn;
     private javax.swing.JTextField fieldDosage;
     private javax.swing.JTextField fieldName;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable medicineCatalogTable;
+    private javax.swing.JTable viewTable;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,7 +5,7 @@
  */
 package UI;
 
-import Model.*;
+import Model.DeliveryPackage;
 
 /**
  *
@@ -13,14 +13,21 @@ import Model.*;
  */
 public class MainJFrame extends javax.swing.JFrame {
 
-    Application application;
-
     /**
      * Creates new form MainJFrame
      */
+    
+    private DeliveryPackage deliveryPackage;
     public MainJFrame() {
         initComponents();
-        application = new Application();
+        this.deliveryPackage = new DeliveryPackage();
+    }
+    MainJFrame(DeliveryPackage delPackage) {
+ 
+        this.setVisible(true);
+        initComponents();
+        
+        this.deliveryPackage = delPackage;
     }
 
     /**
@@ -34,47 +41,39 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jSplitPane1 = new javax.swing.JSplitPane();
         ControlJPanel = new javax.swing.JPanel();
-        assginMedicineBtn = new javax.swing.JButton();
-        createObsevationBtn = new javax.swing.JButton();
-        viewVSHBtn = new javax.swing.JButton();
-        MedicineCatalogBtn = new javax.swing.JButton();
+        btnCreate = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnDisplay = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        ControlJPanel.setBackground(new java.awt.Color(204, 255, 204));
         ControlJPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        assginMedicineBtn.setText("Assign Medicine");
-        assginMedicineBtn.addActionListener(new java.awt.event.ActionListener() {
+        btnCreate.setText("CREATE");
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                assginMedicineBtnActionPerformed(evt);
+                btnCreateActionPerformed(evt);
             }
         });
-        ControlJPanel.add(assginMedicineBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 190, 30));
+        ControlJPanel.add(btnCreate, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 110, 110, 30));
 
-        createObsevationBtn.setText("Create Observation");
-        createObsevationBtn.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdate.setText("UPDATE");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createObsevationBtnActionPerformed(evt);
+                btnUpdateActionPerformed(evt);
             }
         });
-        ControlJPanel.add(createObsevationBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 190, 30));
+        ControlJPanel.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 190, 110, 30));
 
-        viewVSHBtn.setText("View Vital Sign History");
-        viewVSHBtn.addActionListener(new java.awt.event.ActionListener() {
+        btnDisplay.setText("DISPLAY");
+        btnDisplay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewVSHBtnActionPerformed(evt);
+                btnDisplayActionPerformed(evt);
             }
         });
-        ControlJPanel.add(viewVSHBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, -1));
-
-        MedicineCatalogBtn.setText("Medicine Catalog");
-        MedicineCatalogBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MedicineCatalogBtnActionPerformed(evt);
-            }
-        });
-        ControlJPanel.add(MedicineCatalogBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 190, 30));
+        ControlJPanel.add(btnDisplay, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, 110, 30));
 
         jSplitPane1.setLeftComponent(ControlJPanel);
 
@@ -82,39 +81,55 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 504, Short.MAX_VALUE)
+            .addGap(0, 539, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 586, Short.MAX_VALUE)
+            .addGap(0, 538, Short.MAX_VALUE)
         );
 
         jSplitPane1.setRightComponent(jPanel1);
 
-        getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 742, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 742, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 550, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void createObsevationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createObsevationBtnActionPerformed
+    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
         // TODO add your handling code here:
-        jSplitPane1.setRightComponent(new CreateJPanel(application));
-    }//GEN-LAST:event_createObsevationBtnActionPerformed
+        jSplitPane1.setRightComponent(new CreateJPanel(this.deliveryPackage));
+    }//GEN-LAST:event_btnCreateActionPerformed
 
-    private void viewVSHBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewVSHBtnActionPerformed
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        jSplitPane1.setRightComponent(new ViewJPanel(application));
-    }//GEN-LAST:event_viewVSHBtnActionPerformed
+        System.out.println("UI.MainJFrame.btnUpdateActionPerformed()");
+        jSplitPane1.setRightComponent(new EditJPanel(this.deliveryPackage));
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void MedicineCatalogBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MedicineCatalogBtnActionPerformed
+    private void btnDisplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisplayActionPerformed
         // TODO add your handling code here:
-        jSplitPane1.setRightComponent(new CatalogJPanel(application));
-    }//GEN-LAST:event_MedicineCatalogBtnActionPerformed
 
-    private void assginMedicineBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assginMedicineBtnActionPerformed
-        // TODO add your handling code here:
-        jSplitPane1.setRightComponent(new MedicineAssignJPanel(application));
-    }//GEN-LAST:event_assginMedicineBtnActionPerformed
+        jSplitPane1.setRightComponent(new ViewJPanel(this.deliveryPackage));
+    }//GEN-LAST:event_btnDisplayActionPerformed
 
     /**
      * @param args the command line arguments
@@ -153,11 +168,12 @@ public class MainJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ControlJPanel;
-    private javax.swing.JButton MedicineCatalogBtn;
-    private javax.swing.JButton assginMedicineBtn;
-    private javax.swing.JButton createObsevationBtn;
+    private javax.swing.JButton btnCreate;
+    private javax.swing.JButton btnDisplay;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JButton viewVSHBtn;
     // End of variables declaration//GEN-END:variables
+
+    
 }

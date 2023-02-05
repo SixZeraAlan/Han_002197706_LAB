@@ -28,7 +28,7 @@ public class VitalSignHistory {
     }
     
     public Observation findObservation(int id) {
-        for(Observation o: this.vitalSignHistory) {
+        for(Observation o:vitalSignHistory) {
             if(o.getObservationId() == id) {
                 return o;
             }
@@ -38,18 +38,15 @@ public class VitalSignHistory {
     }
     
     public Observation createObservation(int observationId, double bloodPressure, double temperature) {
-        Observation observation = new Observation();
-        observation.setObservationId(observationId);
-        observation.setTemperature(temperature);
-        observation.setBloodPressure(bloodPressure);
+        Observation observation = new Observation(observationId, bloodPressure,temperature);
         
-        this.vitalSignHistory.add(observation);
+        vitalSignHistory.add(observation);
         
         return observation;
     }
     
     public Boolean checkObservationIDUnique(int id) {
-        for (Observation o : this.vitalSignHistory) {
+        for (Observation o : vitalSignHistory) {
             if (o.getObservationId() == id) {
                 return false;
             }

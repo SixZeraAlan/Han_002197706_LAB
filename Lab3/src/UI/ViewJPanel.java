@@ -20,19 +20,31 @@ public class ViewJPanel extends javax.swing.JPanel {
     /**
      * Creates new form CreateJPanel
      */
-    private Application application;
-    
-    DefaultTableModel viewtableModel;
-    Observation selectedOb;
+    Application application;
+    DefaultTableModel model;
+    Observation selectedObservation;
     
     public ViewJPanel() {
         initComponents();
+        fieldObservationId.setEditable(false);
     }
     ViewJPanel(Application application) {
         initComponents();
         this.application = application;
-        this.viewtableModel = (DefaultTableModel) obTable.getModel();
+        model = (DefaultTableModel) viewTable.getModel();
         display();
+        
+    }
+    public void display(){
+        model.setRowCount(0);
+               
+        for(Observation ob:application.getHistory().getVitalSignHistory()){
+            Object[] row = new Object[3];
+            row[0] = ob;
+            row[1] = ob.getBloodPressure();
+            row[2] = ob.getTemperature();
+            model.addRow(row);
+        }
     }
 
     /**
@@ -48,24 +60,29 @@ public class ViewJPanel extends javax.swing.JPanel {
         fieldTemperature = new javax.swing.JTextField();
         fieldObservationId = new javax.swing.JTextField();
         fieldBloodPressure = new javax.swing.JTextField();
-        btnUpdate = new javax.swing.JButton();
+        updateBtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        obTable = new javax.swing.JTable();
-        viewBtn = new javax.swing.JButton();
-        deleteBtn = new javax.swing.JButton();
+        viewTable = new javax.swing.JTable();
+        showBtn = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(204, 204, 255));
+        setBackground(new java.awt.Color(255, 153, 153));
         setForeground(new java.awt.Color(255, 204, 102));
 
-        jLabel1.setText("Create A Vital Sign");
+        jLabel1.setText("Create An Observation");
 
-        btnUpdate.setText("Update");
-        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+        fieldObservationId.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fieldObservationIdFocusLost(evt);
+            }
+        });
+
+        updateBtn.setText("update");
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateActionPerformed(evt);
+                updateBtnActionPerformed(evt);
             }
         });
 
@@ -75,158 +92,142 @@ public class ViewJPanel extends javax.swing.JPanel {
 
         jLabel4.setText("Blood Pressure");
 
-        obTable.setModel(new javax.swing.table.DefaultTableModel(
+        viewTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Id", "T", "BP"
+                "Id", "BP", "T"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
-        });
-        jScrollPane1.setViewportView(obTable);
 
-        viewBtn.setText("View Details");
-        viewBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewBtnActionPerformed(evt);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
+        jScrollPane1.setViewportView(viewTable);
 
-        deleteBtn.setText("Delete");
+        showBtn.setText("Show Details");
+        showBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(270, 270, 270)
-                .addComponent(jLabel1)
-                .addContainerGap(352, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fieldObservationId, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldBloodPressure, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnUpdate))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(viewBtn)
-                        .addGap(64, 64, 64)
-                        .addComponent(deleteBtn)
-                        .addGap(31, 31, 31))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(270, 270, 270)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(updateBtn)
+                                .addGap(196, 196, 196)
+                                .addComponent(showBtn)
+                                .addGap(0, 92, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fieldObservationId, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fieldTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fieldBloodPressure, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(71, 71, 71))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addComponent(jLabel1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(32, 32, 32)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(fieldObservationId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2))
-                                .addGap(35, 35, 35)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(fieldTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3))
-                                .addGap(42, 42, 42)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(fieldBloodPressure, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(14, 14, 14)
-                        .addComponent(btnUpdate)
-                        .addContainerGap(169, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(74, 74, 74)
+                        .addComponent(jLabel1)
+                        .addGap(32, 32, 32)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(viewBtn)
-                            .addComponent(deleteBtn))
-                        .addGap(152, 152, 152))))
+                            .addComponent(fieldObservationId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fieldTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fieldBloodPressure, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(122, 122, 122)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(65, 65, 65)
+                        .addComponent(updateBtn))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(showBtn)))
+                .addContainerGap(169, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+    private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // TODO add your handling code here:
-        if (!fieldObservationId.getText().isEmpty()) {
-
-            Observation o = this.application.getHistory().findObservation(Integer.valueOf(fieldObservationId.getText()));
-            o.setBloodPressure(Double.valueOf(fieldBloodPressure.getText()));
-            o.setTemperature(Double.valueOf(fieldTemperature.getText()));
-
-        } else {
-            JOptionPane.showMessageDialog(null, "You have not made any selection");
+        if(selectedObservation == null){
+            JOptionPane.showMessageDialog(null, "Please select one row!");
+            return;
         }
         
-        display();
-    }//GEN-LAST:event_btnUpdateActionPerformed
+        selectedObservation.setBloodPressure(Double.parseDouble(fieldBloodPressure.getText()));
+        selectedObservation.setTemperature(Double.parseDouble(fieldTemperature.getText()));
+        
+        JOptionPane.showMessageDialog(null, "Updated successfully");
+        
+    }//GEN-LAST:event_updateBtnActionPerformed
 
-    private void viewBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewBtnActionPerformed
+    private void fieldObservationIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldObservationIdFocusLost
         // TODO add your handling code here:
-        int selectedRow = obTable.getSelectedRow();
+        
+    }//GEN-LAST:event_fieldObservationIdFocusLost
 
-        if (selectedRow >= 0) {
-
-            this.selectedOb = (Observation) obTable.getValueAt(selectedRow, 0);
-
-            fieldObservationId.setText(String.valueOf(this.selectedOb.getObservationId()));
-            fieldBloodPressure.setText(String.valueOf(this.selectedOb.getBloodPressure()));
-            fieldTemperature.setText(String.valueOf(this.selectedOb.getTemperature()));
-
-        } else {
-            // no selection made by the user
-
+    private void showBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showBtnActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = viewTable.getSelectedRow();
+        
+        if(selectedRow >= 0){
+            selectedObservation = (Observation) model.getValueAt(selectedRow, 0);
+            fieldObservationId.setText(selectedObservation.getObservationId() + "");
+            fieldBloodPressure.setText(selectedObservation.getBloodPressure() + "");
+            fieldTemperature.setText(selectedObservation.getTemperature() + "");
+            
+        }else{
             JOptionPane.showMessageDialog(null, "Please select a row!");
         }
-    }//GEN-LAST:event_viewBtnActionPerformed
+//        display();
+    }//GEN-LAST:event_showBtnActionPerformed
 
-    public void display() {
-        
-        VitalSignHistory history = this.application.getHistory();
-        if (history.getVitalSignHistory().size() > 0) {
-            
-            viewtableModel.setRowCount(0);
-            
-            for (Observation o : history.getVitalSignHistory()) {
-                
-                Object row[] = new Object[3];
-                
-                row[0] = o.getObservationId();
-                row[1] = o.getTemperature();
-                row[2] = o.getBloodPressure();
-                viewtableModel.addRow(row);
 
-            }
-        } else {
-            System.out.println("Empty List");
-        }
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnUpdate;
-    private javax.swing.JButton deleteBtn;
     private javax.swing.JTextField fieldBloodPressure;
     private javax.swing.JTextField fieldObservationId;
     private javax.swing.JTextField fieldTemperature;
@@ -235,7 +236,8 @@ public class ViewJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable obTable;
-    private javax.swing.JButton viewBtn;
+    private javax.swing.JButton showBtn;
+    private javax.swing.JButton updateBtn;
+    private javax.swing.JTable viewTable;
     // End of variables declaration//GEN-END:variables
 }

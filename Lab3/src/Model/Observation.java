@@ -11,12 +11,18 @@ package Model;
  */
 public class Observation {
     int observationId;
-    double bloodPressure;
-    double temperature;
-    Medicine medication;
+    private double bloodPressure;
+    private double temperature;
+    private Medicine medicine;
 
     public Observation() {
-        medication = new Medicine();
+        medicine = new Medicine();
+    }
+    public Observation(int observationId, double bloodPressure, double temperature) {
+        this.observationId = observationId;
+        this.bloodPressure = bloodPressure;
+        this.temperature = temperature;
+        medicine = new Medicine();
     }
 
     public int getObservationId() {
@@ -43,13 +49,14 @@ public class Observation {
         this.temperature = temperature;
     }
 
-    public Medicine getMedication() {
-        return medication;
+    public Medicine getMedicine() {
+        return medicine;
     }
 
-    public void setMedication(Medicine medication) {
-        this.medication = medication;
+    public void setMedicine(Medicine medicine) {
+        this.medicine = medicine;
     }
+    
     
     @Override
     public String toString() {

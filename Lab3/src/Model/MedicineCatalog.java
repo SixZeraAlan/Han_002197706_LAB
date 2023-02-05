@@ -29,15 +29,13 @@ public class MedicineCatalog {
     }
     
     public Medicine createMedicine(String name, double dosage) {
-        Medicine medicine = new Medicine();
-        medicine.setMedicineName(name);
-        medicine.setDosage(dosage);
-        this.medicineList.add(medicine);
+        Medicine medicine = new Medicine(name, dosage);
+        medicineList.add(medicine);
         return medicine;
     }
     
     public Boolean checIfMedicineUnique(String name) {
-        for (Medicine med : this.medicineList) {
+        for (Medicine med : medicineList) {
             if (med.getMedicineName().equals(name)) {
                 return false;
             }
@@ -46,15 +44,13 @@ public class MedicineCatalog {
     }
     
     // delete a medicine from the catalog
-    public void removeMedicine(String name) {
-         // find the medicine obj in the arraylist with this name
-         
-         for(Medicine med: this.medicineList) {
-             if(med.getMedicineName().equals(name)) {
-                 this.medicineList.remove(med);
-                 break;
-             }
-         }
+    public Medicine findMedicine(String name){
+        for(Medicine med : medicineList){
+            if(med.getMedicineName().equals(name)){
+                return med;
+            }
+        }
+        return null;
     }
     
     
